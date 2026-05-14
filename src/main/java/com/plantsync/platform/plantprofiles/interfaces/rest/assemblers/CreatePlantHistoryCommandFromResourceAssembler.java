@@ -7,9 +7,14 @@ import com.plantsync.platform.plantprofiles.interfaces.rest.resources.CreatePlan
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class CreatePlantHistoryCommandFromResourceAssembler {
+public final class CreatePlantHistoryCommandFromResourceAssembler {
 
-    public static CreatePlantHistoryCommand toCommandFromResource(CreatePlantHistoryResource resource) {
+    private CreatePlantHistoryCommandFromResourceAssembler() {
+    }
+
+    public static CreatePlantHistoryCommand toCommandFromResource(
+            CreatePlantHistoryResource resource
+    ) {
 
         return new CreatePlantHistoryCommand(
                 new PlantId(resource.plantId()),
@@ -17,8 +22,6 @@ public class CreatePlantHistoryCommandFromResourceAssembler {
                 LocalDate.parse(resource.date()),
                 LocalTime.parse(resource.time()),
                 resource.humidity()
-
         );
     }
-
 }

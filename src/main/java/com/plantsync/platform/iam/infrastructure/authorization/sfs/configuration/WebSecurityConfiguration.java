@@ -68,9 +68,12 @@ public class WebSecurityConfiguration {
      */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        var authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
+
+        DaoAuthenticationProvider authenticationProvider =
+                new DaoAuthenticationProvider(userDetailsService);
+
         authenticationProvider.setPasswordEncoder(hashingService);
+
         return authenticationProvider;
     }
 
@@ -92,16 +95,37 @@ public class WebSecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.cors(configurer -> configurer.configurationSource(request -> {
+
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("*"));
-            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-            cors.setAllowedHeaders(List.of("*"));
+
+            cors.setAllowedOrigins(List.of(
+                    "http://localhost:4200",
+                    "http://localhost:5173",
+                    "http://localhost:3000"
+            ));
+
+            cors.setAllowedMethods(List.of(
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "DELETE"
+            ));
+
+            cors.setAllowedHeaders(List.of(
+                    "Authorization",
+                    "Content-Type"
+            ));
+
             return cors;
         }));
+
         http.csrf(csrfConfigurer -> csrfConfigurer.disable())
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
-                .sessionManagement( customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
+                .sessionManagement(customizer ->
+                        customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
                                 "/api/v1/authentication/**",
@@ -110,12 +134,18 @@ public class WebSecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
                                 "/api/payments/create-session",
-                                "/webjars/**").permitAll()
+                                "/webjars/**"
+                        ).permitAll()
                         .anyRequest().authenticated());
-        http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
-        return http.build();
 
+        http.authenticationProvider(authenticationProvider());
+
+        http.addFilterBefore(
+                authorizationRequestFilter(),
+                UsernamePasswordAuthenticationFilter.class
+        );
+
+        return http.build();
     }
 
     /**

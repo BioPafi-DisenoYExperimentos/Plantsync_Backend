@@ -12,11 +12,4 @@ public record UpdatePlantResource(
         Long profileId
 
 ) {
-    /**
-     * Validates the resource.
-     * @throws IllegalArgumentException if the title or description is null or blank.
-     */
-    public UpdatePlantResource {
-
-    }
 }

@@ -11,14 +11,30 @@ public record CreateGuideResource(
 
 ) {
 
-    public CreateGuideResource{
+    public CreateGuideResource {
 
-    if (title.isBlank() || title == null) throw new IllegalArgumentException();
-    if (name.isBlank() || name == null) throw new IllegalArgumentException();
-    if (description.isBlank() || description == null) throw new IllegalArgumentException();
-    if (topic.isBlank() || topic == null) throw new IllegalArgumentException();
-    if (type.isBlank() || type == null) throw new IllegalArgumentException();
-    if (imageUrl.isBlank() || imageUrl == null) throw new IllegalArgumentException();
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException();
+        }
 
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+
+        if (topic == null || topic.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+
+        if (type == null || type.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+
+        if (imageUrl == null || imageUrl.isBlank()) {
+            throw new IllegalArgumentException();
+        }
     }
 }

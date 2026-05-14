@@ -1,6 +1,5 @@
 package com.plantsync.platform.plantprofiles.domain.model.commands;
 
-
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.HumidityLevel;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.PlantName;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.ProfileId;
@@ -18,8 +17,4 @@ public record UpdatePlantCommand(
         Boolean notificationsEnabled,
         ProfileId profileId
 ) {
-    public UpdatePlantCommand {
-
-
-    }
 }

@@ -34,7 +34,13 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final ProfilesContextFacade profilesContextFacade;
     private final RoleRepository roleRepository;
 
-    public UserCommandServiceImpl(UserRepository userRepository, HashingService hashingService, TokenService tokenService,ProfilesContextFacade profilesContextFacade, RoleRepository roleRepository) {
+    public UserCommandServiceImpl(
+            UserRepository userRepository,
+            HashingService hashingService,
+            TokenService tokenService,
+            ProfilesContextFacade profilesContextFacade,
+            RoleRepository roleRepository
+    ) {
         this.userRepository = userRepository;
         this.hashingService = hashingService;
         this.tokenService = tokenService;
@@ -54,10 +60,15 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public Optional<ImmutablePair<User, String>> handle(SignInCommand command) {
         var user = userRepository.findByEmail(command.username());
-        if (user.isEmpty())
-            throw new RuntimeException("User not found");
-        if (!hashingService.matches(command.password(), user.get().getPassword()))
-            throw new RuntimeException("Invalid password");
+
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        if (!hashingService.matches(command.password(), user.get().getPassword())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
         var token = tokenService.generateToken(user.get().getEmail());
         return Optional.of(ImmutablePair.of(user.get(), token));
     }
@@ -72,10 +83,16 @@ public class UserCommandServiceImpl implements UserCommandService {
      */
     @Override
     public Optional<User> handle(SignUpCommand command) {
-        if (userRepository.existsByEmail(command.email()))
+        if (userRepository.existsByEmail(command.email())) {
             throw new UserAlreadyExistsException(command.email());
-        var roles = command.roles().stream().map(role -> roleRepository.findByName(role.getName()).orElseThrow(() -> new RoleNotFoundException(role.getName())))
+        }
+
+        var roles = command.roles()
+                .stream()
+                .map(role -> roleRepository.findByName(role.getName())
+                        .orElseThrow(() -> new RoleNotFoundException(role.getName())))
                 .toList();
+
         var user = new User(command.email(), hashingService.encode(command.password()), roles);
         userRepository.save(user);
 
@@ -90,9 +107,11 @@ public class UserCommandServiceImpl implements UserCommandService {
         return Optional.of(createdUser);
     }
 
+
     @Override
     public Optional<User> handle(UpdateUserCommand command) {
         var optionalUser = userRepository.findById(command.id());
+
         if (optionalUser.isEmpty()) {
             return Optional.empty();
         }
@@ -102,7 +121,5 @@ public class UserCommandServiceImpl implements UserCommandService {
         return Optional.of(userRepository.save(
                 user.updateInformation(command.email())
         ));
-
-
     }
 }

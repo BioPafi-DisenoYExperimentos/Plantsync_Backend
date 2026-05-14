@@ -6,29 +6,35 @@ import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
 import com.plantsync.platform.profiles.domain.model.valueobjects.SubscriptionPlan;
 import com.plantsync.platform.profiles.domain.model.valueobjects.UserId;
 import com.plantsync.platform.profiles.domain.services.ProfileCommandService;
-import com.plantsync.platform.profiles.domain.services.ProfileQueryService;
 import com.plantsync.platform.profiles.interfaces.acl.ProfilesContextFacade;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProfilesContextFacadeImpl implements ProfilesContextFacade {
-    private final ProfileCommandService profileCommandService;
-    private final ProfileQueryService profileQueryService;
 
-    public ProfilesContextFacadeImpl(ProfileCommandService profileCommandService,
-            ProfileQueryService profileQueryService) {
+    private final ProfileCommandService profileCommandService;
+
+    public ProfilesContextFacadeImpl(
+            ProfileCommandService profileCommandService
+    ) {
         this.profileCommandService = profileCommandService;
-        this.profileQueryService = profileQueryService;
     }
 
     @Override
-    public Long createProfile(String name, Long userId, String subscriptionPlan) {
+    public Long createProfile(
+            String name,
+            Long userId,
+            String subscriptionPlan
+    ) {
+
         var command = new CreateProfileCommand(
                 new PersonName(name),
                 SubscriptionPlan.fromString(subscriptionPlan),
-                new UserId(userId));
+                new UserId(userId)
+        );
+
         var profile = profileCommandService.handle(command);
+
         return profile.map(Profile::getId).orElse(0L);
     }
-
 }

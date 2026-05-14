@@ -3,23 +3,25 @@ package com.plantsync.platform.plantprofiles.interfaces.rest.assemblers;
 import com.plantsync.platform.plantprofiles.domain.model.aggregates.Plant;
 import com.plantsync.platform.plantprofiles.interfaces.rest.resources.PlantResource;
 
-public class PlantResourceFromEntityAssembler{
+public final class PlantResourceFromEntityAssembler {
 
-public static PlantResource toResourceFromEntity(Plant entity){
+ private PlantResourceFromEntityAssembler() {
+ }
 
- return new PlantResource(
-         entity.getId(),
-         entity.getName().value(),
-         entity.getSpecies(),
-         entity.getAcquisitionDate().toString(),
-         entity.getHumidity().name(),
-         entity.getNextWateringDate().toString(),
-         entity.getImageUrl(),
-         entity.getNotificationsEnabled(),
-         entity.getProfileId().value()
- );
-}
+ public static PlantResource toResourceFromEntity(
+         Plant entity
+ ) {
 
-
-
+  return new PlantResource(
+          entity.getId(),
+          entity.getName().value(),
+          entity.getSpecies(),
+          entity.getAcquisitionDate().toString(),
+          entity.getHumidity().name(),
+          entity.getNextWateringDate().toString(),
+          entity.getImageUrl(),
+          entity.getNotificationsEnabled(),
+          entity.getProfileId().value()
+  );
+ }
 }

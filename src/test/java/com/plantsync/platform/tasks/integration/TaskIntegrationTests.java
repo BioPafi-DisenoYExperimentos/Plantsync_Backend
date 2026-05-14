@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class TaskIntegrationTests {
+class TaskIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,7 +40,8 @@ public class TaskIntegrationTests {
 
     @Test
     @WithMockUser
-    public void createTask_ShouldReturnCreatedAndPersistInDatabase() throws Exception {
+    void createTask_ShouldReturnCreatedAndPersistInDatabase() throws Exception {
+
         // Arrange
         CreateTaskResource resource = new CreateTaskResource(
                 "Watering",
@@ -52,21 +53,24 @@ public class TaskIntegrationTests {
 
         // Act & Assert
         mockMvc.perform(post("/api/v1/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(resource)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(resource)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.action").value("Watering"))
                 .andExpect(jsonPath("$.completed").value(false));
 
         // Verify database state
         assertThat(taskRepository.count()).isEqualTo(1);
+
         var task = taskRepository.findAll().get(0);
+
         assertThat(task.getAction()).isEqualTo("Watering");
     }
 
     @Test
     @WithMockUser
-    public void getAllTasks_ShouldReturnTasksList() throws Exception {
+    void getAllTasks_ShouldReturnTasksList() throws Exception {
+
         // Arrange
         CreateTaskResource resource = new CreateTaskResource(
                 "Fertilizing",
@@ -75,11 +79,11 @@ public class TaskIntegrationTests {
                 1L,
                 false
         );
-        
+
         // Create a task first
         mockMvc.perform(post("/api/v1/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(resource)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(resource)))
                 .andExpect(status().isCreated());
 
         // Act & Assert
@@ -88,5 +92,4 @@ public class TaskIntegrationTests {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].action").value("Fertilizing"));
     }
-
 }

@@ -8,21 +8,24 @@ import com.plantsync.platform.plantprofiles.interfaces.rest.resources.CreatePlan
 
 import java.time.LocalDate;
 
-public class CreatePlantCommandFromResourceAssembler {
+public final class CreatePlantCommandFromResourceAssembler {
 
-
-        public static CreatePlantCommand toCommandFromResource(CreatePlantResource resource) {
-
-            return new CreatePlantCommand(
-                    new PlantName(resource.name()),
-                    resource.species(),
-                    LocalDate.parse(resource.acquisitionDate()),
-                    HumidityLevel.valueOf(resource.humidity().toUpperCase()),
-                    LocalDate.parse(resource.nextWateringDate()),
-                    resource.imageUrl(),
-                    resource.notificationsEnabled(),
-                    new ProfileId(resource.profileId())
-            );
+    private CreatePlantCommandFromResourceAssembler() {
     }
 
+    public static CreatePlantCommand toCommandFromResource(
+            CreatePlantResource resource
+    ) {
+
+        return new CreatePlantCommand(
+                new PlantName(resource.name()),
+                resource.species(),
+                LocalDate.parse(resource.acquisitionDate()),
+                HumidityLevel.valueOf(resource.humidity().toUpperCase()),
+                LocalDate.parse(resource.nextWateringDate()),
+                resource.imageUrl(),
+                resource.notificationsEnabled(),
+                new ProfileId(resource.profileId())
+        );
+    }
 }

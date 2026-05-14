@@ -1,10 +1,11 @@
 package com.plantsync.platform.plantprofiles.domain.model.aggregates;
 
 import com.plantsync.platform.plantprofiles.domain.model.commands.CreatePlantCommand;
+import com.plantsync.platform.plantprofiles.domain.model.commands.UpdatePlantCommand;
+import com.plantsync.platform.plantprofiles.domain.model.valueobjects.HumidityLevel;
+import com.plantsync.platform.plantprofiles.domain.model.valueobjects.PlantName;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.ProfileId;
 import com.plantsync.platform.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import com.plantsync.platform.plantprofiles.domain.model.valueobjects.PlantName;
-import com.plantsync.platform.plantprofiles.domain.model.valueobjects.HumidityLevel;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+
 /**
  * Aggregate root representing a Plant entity in the system.
  * Contains information about the plant's identity, care, and ownership profile.
@@ -59,7 +61,6 @@ public class Plant extends AuditableAbstractAggregateRoot<Plant> {
     @Column(name = "image_url", columnDefinition = "LONGTEXT")
     private String imageUrl;
 
-
     /**
      * Indicates whether notifications are enabled for this plant.
      */
@@ -97,32 +98,19 @@ public class Plant extends AuditableAbstractAggregateRoot<Plant> {
     /**
      * Updates the plant's information.
      *
-     * @param newName the new name
-     * @param newSpecies the new species
-     * @param newAcquisitionDate the new acquisition date
-     * @param newHumidity the new humidity preference
-     * @param newNextWateringDate the new watering schedule
-     * @param newImageUrl the new image
-     * @param newNotificationsEnabled whether notifications are enabled
-     * @param newProfileId the owner profile ID
+     * @param command the command containing the updated plant information
      * @return the updated plant instance
      */
-    public Plant updateInformation(PlantName newName,
-                                   String newSpecies,
-                                   LocalDate newAcquisitionDate,
-                                   HumidityLevel newHumidity,
-                                   LocalDate newNextWateringDate,
-                                   String newImageUrl,
-                                   Boolean newNotificationsEnabled,
-                                   ProfileId newProfileId) {
-        this.name = newName;
-        this.species = newSpecies;
-        this.acquisitionDate = newAcquisitionDate;
-        this.humidity = newHumidity;
-        this.nextWateringDate = newNextWateringDate;
-        this.imageUrl = newImageUrl;
-        this.notificationsEnabled = newNotificationsEnabled;
-        this.profileId = newProfileId;
+    public Plant updateInformation(UpdatePlantCommand command) {
+
+        this.name = command.name();
+        this.species = command.species();
+        this.acquisitionDate = command.acquisitionDate();
+        this.humidity = command.humidity();
+        this.nextWateringDate = command.nextWateringDate();
+        this.imageUrl = command.imageUrl();
+        this.notificationsEnabled = command.notificationsEnabled();
+        this.profileId = command.profileId();
 
         return this;
     }

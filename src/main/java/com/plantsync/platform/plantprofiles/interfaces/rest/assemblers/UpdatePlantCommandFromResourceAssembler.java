@@ -8,9 +8,16 @@ import com.plantsync.platform.plantprofiles.interfaces.rest.resources.UpdatePlan
 
 import java.time.LocalDate;
 
-public class UpdatePlantCommandFromResourceAssembler {
+public final class UpdatePlantCommandFromResourceAssembler {
 
-    public static UpdatePlantCommand toCommandFromResource(Long plantId, UpdatePlantResource resource) {
+    private UpdatePlantCommandFromResourceAssembler() {
+    }
+
+    public static UpdatePlantCommand toCommandFromResource(
+            Long plantId,
+            UpdatePlantResource resource
+    ) {
+
         return new UpdatePlantCommand(
                 plantId,
                 new PlantName(resource.name()),
@@ -21,8 +28,6 @@ public class UpdatePlantCommandFromResourceAssembler {
                 resource.imageUrl(),
                 resource.notificationsEnabled(),
                 new ProfileId(resource.profileId())
-
-
         );
     }
 }

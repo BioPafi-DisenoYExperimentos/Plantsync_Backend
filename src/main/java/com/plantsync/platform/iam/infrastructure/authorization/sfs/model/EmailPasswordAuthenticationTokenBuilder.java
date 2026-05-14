@@ -9,7 +9,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
  * This class is used to build the UsernamePasswordAuthenticationToken object
  * that is used to authenticate the user.
  */
-public class EmailPasswordAuthenticationTokenBuilder {
+public final class EmailPasswordAuthenticationTokenBuilder {
+
+    private EmailPasswordAuthenticationTokenBuilder() {
+    }
 
     /**
      * This method is responsible for building the UsernamePasswordAuthenticationToken object.
@@ -19,9 +22,22 @@ public class EmailPasswordAuthenticationTokenBuilder {
      * @see UsernamePasswordAuthenticationToken
      * @see UserDetails
      */
-    public static UsernamePasswordAuthenticationToken build(UserDetails principal, HttpServletRequest request) {
-        var emailPasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-        emailPasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    public static UsernamePasswordAuthenticationToken build(
+            UserDetails principal,
+            HttpServletRequest request
+    ) {
+
+        var emailPasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        principal,
+                        null,
+                        principal.getAuthorities()
+                );
+
+        emailPasswordAuthenticationToken.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request)
+        );
+
         return emailPasswordAuthenticationToken;
     }
 }
