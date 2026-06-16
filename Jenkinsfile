@@ -13,7 +13,7 @@ pipeline {
     stage ('Compile Project') {
       steps {
         withMaven(maven : 'MAVEN_3_9_15') {
-            bat 'mvn clean compile'
+            sh 'mvn clean compile'
         }
       }
     }
@@ -21,7 +21,7 @@ pipeline {
     /* stage('Validate Checkstyle') {
       steps {
         withMaven(maven: 'MAVEN_3_9_15') {
-          bat 'mvn checkstyle:check'
+          sh 'mvn checkstyle:check'
         }
       }
     }
@@ -30,7 +30,7 @@ pipeline {
     stage('Validate Unit Tests') {
       steps {
         withMaven(maven: 'MAVEN_3_9_15') {
-          bat 'mvn test'
+          sh 'mvn test'
         }
       }
     }
@@ -38,8 +38,8 @@ pipeline {
     stage('Validate Test Coverage') {
       steps {
         withMaven(maven: 'MAVEN_3_9_15') {
-          bat 'mvn clean verify jacoco:report'
-          bat 'mvn jacoco:check'
+          sh 'mvn clean verify jacoco:report'
+          sh 'mvn jacoco:check'
         }
       }
     }
@@ -47,7 +47,7 @@ pipeline {
      stage ('SonarQube Analysis') {
         steps {
             withSonarQubeEnv('MiSonarServer') {
-                bat 'mvn verify sonar:sonar -Dsonar.projectKey=plantsync_backend'
+                sh 'mvn verify sonar:sonar -Dsonar.projectKey=plantsync_backend'
             }
         }
      }
@@ -58,8 +58,8 @@ pipeline {
 
                 //Ejecuta el comando de Docker utilizando el socket compartido del host
                 //Supone que tienes un archivo 'Dockerfile' en la raíz de tu proyecto Sprint boot
-                bat "docker build -t ${IMAGE_NAME}:${TAG} ."
-                bat "docker build -t ${IMAGE_NAME}:latest ."
+                sh "docker build -t ${IMAGE_NAME}:${TAG} ."
+                sh "docker build -t ${IMAGE_NAME}:latest ."
 
                 echo "Imagen construida exitosamente."
             }
@@ -69,7 +69,7 @@ pipeline {
     /*stage ('Package Project') {
         steps {
             withMaven(maven : 'MAVEN_3_9_15') {
-                bat 'mvn package'
+                sh 'mvn package'
             }
         }
     }*/
