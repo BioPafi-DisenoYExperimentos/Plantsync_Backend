@@ -44,28 +44,55 @@ pipeline {
       }
     }
 
-     stage ('SonarQube Analysis') {
-        steps {
-            withSonarQubeEnv('MiSonarServer') {
-                sh 'mvn verify sonar:sonar -Dsonar.projectKey=plantsync_backend'
-            }
-        }
+     stage('SonarQube Analysis') {
+         steps {
+
+             // 1. Enviar el código a SonarQube
+             withSonarQubeEnv('MiSonarServer') {
+                 sh '''
+                     mvn clean verify sonar:sonar \
+                     -Dsonar.projectKey=plantsync_backend
+                 '''
+             }
+
+             // 2. Esperar el resultado del Quality Gate
+             script {
+                 timeout(time: 10, unit: 'MINUTES') {
+
+                     def qg = waitForQualityGate()
+
+                     // 3. Validar el resultado
+                     if (qg.status != 'OK') {
+                         error "El pipeline se detuvo porque el proyecto no superó el Quality Gate. Estado: ${qg.status}"
+                     }
+                 }
+             }
+         }
      }
+
     stage('Construir Imagen Docker') {
         steps {
             script {
+
                 echo "Iniciando la construcción de la imagen Docker: ${IMAGE_NAME}:${TAG}"
 
-                //Ejecuta el comando de Docker utilizando el socket compartido del host
-                //Supone que tienes un archivo 'Dockerfile' en la raíz de tu proyecto Sprint boot
-                sh "docker build -t ${IMAGE_NAME}:${TAG} ."
-                sh "docker build -t ${IMAGE_NAME}:latest ."
+                // Ejecuta la construcción de la imagen Docker utilizando Docker Buildx
+                // Se genera una imagen compatible con arquitectura AMD64,
+                // ampliamente utilizada en servidores de producción y entornos cloud.
+
+                echo "Construyendo imagen híbrida/compatible con servidores de producción (AMD64)..."
+
+                // Genera la imagen versionada utilizando el número de ejecución de Jenkins
+                sh "docker buildx build --platform linux/amd64 -t ${IMAGE_NAME}:${TAG} --load ."
+
+                // Genera adicionalmente la etiqueta 'latest' para representar la última versión estable
+                sh "docker buildx build --platform linux/amd64 -t ${IMAGE_NAME}:latest --load ."
 
                 echo "Imagen construida exitosamente."
+
             }
         }
     }
-
     /*stage ('Package Project') {
         steps {
             withMaven(maven : 'MAVEN_3_9_15') {
