@@ -1,0 +1,6 @@
+pipeline-stage-view:latest
+workflow-aggregator:latest
+git:latest
+sonar:latest
+maven-plugin:latest
+pipeline-maven:latest
