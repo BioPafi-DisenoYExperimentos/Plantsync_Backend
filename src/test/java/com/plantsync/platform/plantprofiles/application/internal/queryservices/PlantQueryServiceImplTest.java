@@ -3,7 +3,7 @@ package com.plantsync.platform.plantprofiles.application.internal.queryservices;
 import com.plantsync.platform.plantprofiles.domain.model.aggregates.Plant;
 import com.plantsync.platform.plantprofiles.domain.model.commands.CreatePlantCommand;
 import com.plantsync.platform.plantprofiles.domain.model.queries.GetAllPlantsByProfileIdQuery;
-import com.plantsync.platform.plantprofiles.domain.model.queries.GetAllPlantsQuery;
+import com.plantsync.platform.plantprofiles.domain.model.queries.GetAllPlantsQueries;
 import com.plantsync.platform.plantprofiles.domain.model.queries.GetPlantByIdQuery;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.HumidityLevel;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.PlantName;
@@ -42,7 +42,7 @@ class PlantQueryServiceImplTest {
   @Test
   void handleGetAllPlantsQueryShouldReturnAllPlants() {
     // Arrange
-    var query = new GetAllPlantsQuery();
+    var query = GetAllPlantsQueries.INSTANCE;
     var plants = List.of(createPlant());
     when(plantRepository.findAll()).thenReturn(plants);
 

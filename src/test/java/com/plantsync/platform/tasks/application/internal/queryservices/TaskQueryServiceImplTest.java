@@ -2,7 +2,7 @@ package com.plantsync.platform.tasks.application.internal.queryservices;
 
 import com.plantsync.platform.tasks.domain.model.aggregates.Task;
 import com.plantsync.platform.tasks.domain.model.commands.CreateTaskCommand;
-import com.plantsync.platform.tasks.domain.model.queries.GetAllTasksQuery;
+import com.plantsync.platform.tasks.domain.model.queries.GetAllTasksQueries;
 import com.plantsync.platform.tasks.domain.model.queries.GetTaskByIdQuery;
 import com.plantsync.platform.tasks.domain.model.valueobjects.PlantId;
 import com.plantsync.platform.tasks.domain.model.valueobjects.ProfileId;
@@ -35,7 +35,7 @@ class TaskQueryServiceImplTest {
   @Test
   void handleGetAllTasksQueryShouldReturnAllTasks() {
     // Arrange
-    var query = new GetAllTasksQuery();
+    var query = GetAllTasksQueries.INSTANCE;
     var tasks = List.of(createTask());
     when(taskRepository.findAll()).thenReturn(tasks);
 

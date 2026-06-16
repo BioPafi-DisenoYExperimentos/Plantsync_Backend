@@ -94,7 +94,7 @@ public class PlantCommandController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Plant deleted"),
       @ApiResponse(responseCode = "404", description = "Plant not found")})
-  public ResponseEntity<?> deletePlant(@PathVariable Long plantId) {
+  public ResponseEntity<String> deletePlant(@PathVariable Long plantId) {
     var deletePlantCommand = new DeletePlantCommand(plantId);
     plantCommandService.handle(deletePlantCommand);
     return ResponseEntity.ok("Plant with id successfully deleted");

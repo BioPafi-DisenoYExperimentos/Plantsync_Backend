@@ -10,7 +10,9 @@ import java.time.LocalTime;
  * The type Create plant history command from resource assembler.
  */
 public class CreatePlantHistoryCommandFromResourceAssembler {
-
+  private CreatePlantHistoryCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource create plant history command.
    *

@@ -9,6 +9,9 @@ import com.plantsync.platform.iam.interfaces.rest.resources.AuthenticatedUserRes
 
 public class AuthenticatedUserResourceFromEntityAssembler {
 
+  private AuthenticatedUserResourceFromEntityAssembler() {
+    // Utility class
+  }
   /**
    * Auth User Resource.
    * */

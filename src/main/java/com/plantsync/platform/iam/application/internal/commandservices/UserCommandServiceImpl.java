@@ -2,8 +2,10 @@ package com.plantsync.platform.iam.application.internal.commandservices;
 
 import com.plantsync.platform.iam.application.internal.outboundservices.hashing.HashingService;
 import com.plantsync.platform.iam.application.internal.outboundservices.tokens.TokenService;
+import com.plantsync.platform.iam.domain.exceptions.InvalidPasswordException;
 import com.plantsync.platform.iam.domain.exceptions.RoleNotFoundException;
 import com.plantsync.platform.iam.domain.exceptions.UserAlreadyExistsException;
+import com.plantsync.platform.iam.domain.exceptions.UserNotFoundException;
 import com.plantsync.platform.iam.domain.model.aggregates.User;
 import com.plantsync.platform.iam.domain.model.commands.SignInCommand;
 import com.plantsync.platform.iam.domain.model.commands.SignUpCommand;
@@ -59,16 +61,17 @@ public class UserCommandServiceImpl implements UserCommandService {
    *
    * @param command the sign-in command containing the email and password
    * @return and optional containing the user matching the email and the generated token
-   * @throws RuntimeException if the user is not found or the password is invalid
+   * @throws UserNotFoundException    if the user is not found
+   * @throws InvalidPasswordException if the password is invalid
    */
   @Override
   public Optional<ImmutablePair<User, String>> handle(SignInCommand command) {
     var user = userRepository.findByEmail(command.username());
     if (user.isEmpty()) {
-      throw new RuntimeException("User not found");
+      throw new UserNotFoundException(command.username());
     }
     if (!hashingService.matches(command.password(), user.get().getPassword())) {
-      throw new RuntimeException("Invalid password");
+      throw new InvalidPasswordException();
     }
     var token = tokenService.generateToken(user.get().getEmail());
     return Optional.of(ImmutablePair.of(user.get(), token));

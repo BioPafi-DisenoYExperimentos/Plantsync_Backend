@@ -3,15 +3,19 @@ package com.plantsync.platform.iam.infrastructure.authorization.sfs.configuratio
 import com.plantsync.platform.iam.infrastructure.authorization.sfs.pipeline.BearerAuthorizationRequestFilter;
 import com.plantsync.platform.iam.infrastructure.hashing.bcrypt.BcryptHashingService;
 import com.plantsync.platform.iam.infrastructure.tokens.jwt.BearerTokenService;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,6 +43,8 @@ public class WebSecurityConfiguration {
   private final BcryptHashingService hashingService;
 
   private final AuthenticationEntryPoint unauthorizedRequestHandler;
+
+  private final List<String> allowedOrigins;
 
   /**
    * This method creates the Bearer Authorization Request Filter.
@@ -68,13 +74,11 @@ public class WebSecurityConfiguration {
   /**
    * This method creates the authentication provider.
    *
-   * @return The {@link DaoAuthenticationProvider} authentication provider with the user details
-   *         service and the password encoder.
+   * @return The authentication provider with the user details service and password encoder.
    */
   @Bean
-  public DaoAuthenticationProvider authenticationProvider() {
-    var authenticationProvider = new DaoAuthenticationProvider();
-    authenticationProvider.setUserDetailsService(userDetailsService);
+  public AuthenticationProvider authenticationProvider() {
+    var authenticationProvider = new DaoAuthenticationProvider(userDetailsService);
     authenticationProvider.setPasswordEncoder(hashingService);
     return authenticationProvider;
   }
@@ -101,12 +105,12 @@ public class WebSecurityConfiguration {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors(configurer -> configurer.configurationSource(request -> {
       var cors = new CorsConfiguration();
-      cors.setAllowedOrigins(List.of("*"));
+      cors.setAllowedOrigins(allowedOrigins);
       cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-      cors.setAllowedHeaders(List.of("*"));
+      cors.setAllowedHeaders(List.of("Authorization", "Content-Type"));
       return cors;
     }));
-    http.csrf(csrfConfigurer -> csrfConfigurer.disable())
+    http.csrf(AbstractHttpConfigurer::disable)
         .exceptionHandling(exceptionHandling -> exceptionHandling
             .authenticationEntryPoint(unauthorizedRequestHandler))
         .sessionManagement(customizer -> customizer
@@ -134,14 +138,20 @@ public class WebSecurityConfiguration {
    * @param tokenService             The token service.
    * @param hashingService           The hashing service.
    * @param authenticationEntryPoint The authentication entry point.
+   * @param allowedOrigins           Comma-separated list of allowed CORS origins.
    */
   public WebSecurityConfiguration(
       @Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService,
       BearerTokenService tokenService, BcryptHashingService hashingService,
-      AuthenticationEntryPoint authenticationEntryPoint) {
+      AuthenticationEntryPoint authenticationEntryPoint,
+      @Value("${cors.allowed-origins}") String allowedOrigins) {
     this.userDetailsService = userDetailsService;
     this.tokenService = tokenService;
     this.hashingService = hashingService;
     this.unauthorizedRequestHandler = authenticationEntryPoint;
+    this.allowedOrigins = Arrays.stream(allowedOrigins.split(","))
+        .map(String::trim)
+        .filter(origin -> !origin.isEmpty())
+        .toList();
   }
 }

@@ -3,7 +3,7 @@ package com.plantsync.platform.profiles.application.internal;
 import com.plantsync.platform.profiles.domain.model.aggregates.Profile;
 import com.plantsync.platform.profiles.domain.model.commands.CreateProfileCommand;
 import com.plantsync.platform.profiles.domain.model.commands.UpdateProfileCommand;
-import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQuery;
+import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQueries;
 import com.plantsync.platform.profiles.domain.model.queries.GetProfileByIdQuery;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PaymentStatus;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
@@ -117,7 +117,7 @@ class ProfilesIntegrationTest {
         profileCommandService.handle(command2);
 
         // Act
-        List<Profile> profiles = profileQueryService.handle(new GetAllProfilesQuery());
+        List<Profile> profiles = profileQueryService.handle(GetAllProfilesQueries.INSTANCE);
 
         // Assert
         assertNotNull(profiles);

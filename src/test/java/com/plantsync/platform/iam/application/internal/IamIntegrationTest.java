@@ -1,11 +1,11 @@
 package com.plantsync.platform.iam.application.internal;
 
-import com.plantsync.platform.iam.domain.model.commands.SeedRolesCommand;
+import com.plantsync.platform.iam.domain.model.commands.SeedRolesCommands;
 import com.plantsync.platform.iam.domain.model.commands.SignInCommand;
 import com.plantsync.platform.iam.domain.model.commands.SignUpCommand;
 import com.plantsync.platform.iam.domain.model.commands.UpdateUserCommand;
 import com.plantsync.platform.iam.domain.model.entities.Role;
-import com.plantsync.platform.iam.domain.model.queries.GetAllUsersQuery;
+import com.plantsync.platform.iam.domain.model.queries.GetAllUsersQueries;
 import com.plantsync.platform.iam.domain.model.queries.GetUserByEmailQuery;
 import com.plantsync.platform.iam.domain.model.queries.GetUserByIdQuery;
 import com.plantsync.platform.iam.domain.model.valueobjects.Roles;
@@ -74,7 +74,7 @@ class IamIntegrationTest {
   void setUp() {
     userRepository.deleteAll();
     roleRepository.deleteAll();
-    roleCommandService.handle(new SeedRolesCommand());
+    roleCommandService.handle(SeedRolesCommands.INSTANCE);
   }
 
   @Test
@@ -152,7 +152,7 @@ class IamIntegrationTest {
     var secondUser = userCommandService.handle(secondCommand).orElseThrow();
 
     // Act
-    var users = userQueryService.handle(new GetAllUsersQuery());
+    var users = userQueryService.handle(GetAllUsersQueries.INSTANCE);
 
     // Assert
     assertTrue(users.stream().anyMatch(user -> user.getId().equals(firstUser.getId())));

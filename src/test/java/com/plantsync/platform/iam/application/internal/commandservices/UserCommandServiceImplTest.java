@@ -2,8 +2,10 @@ package com.plantsync.platform.iam.application.internal.commandservices;
 
 import com.plantsync.platform.iam.application.internal.outboundservices.hashing.HashingService;
 import com.plantsync.platform.iam.application.internal.outboundservices.tokens.TokenService;
+import com.plantsync.platform.iam.domain.exceptions.InvalidPasswordException;
 import com.plantsync.platform.iam.domain.exceptions.RoleNotFoundException;
 import com.plantsync.platform.iam.domain.exceptions.UserAlreadyExistsException;
+import com.plantsync.platform.iam.domain.exceptions.UserNotFoundException;
 import com.plantsync.platform.iam.domain.model.aggregates.User;
 import com.plantsync.platform.iam.domain.model.commands.SignInCommand;
 import com.plantsync.platform.iam.domain.model.commands.SignUpCommand;
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,10 +82,10 @@ class UserCommandServiceImplTest {
     when(userRepository.findByEmail(command.username())).thenReturn(Optional.empty());
 
     // Act
-    var exception = assertThrows(RuntimeException.class, () -> userCommandService.handle(command));
+    var exception = assertThrows(UserNotFoundException.class, () -> userCommandService.handle(command));
 
     // Assert
-    assertEquals("User not found", exception.getMessage());
+    assertEquals("User with email 'missing@plantsync.com' not found.", exception.getMessage());
     verify(hashingService, never()).matches(any(), any());
     verify(tokenService, never()).generateToken(any());
   }
@@ -96,7 +99,7 @@ class UserCommandServiceImplTest {
     when(hashingService.matches(command.password(), user.getPassword())).thenReturn(false);
 
     // Act
-    var exception = assertThrows(RuntimeException.class, () -> userCommandService.handle(command));
+    var exception = assertThrows(InvalidPasswordException.class, () -> userCommandService.handle(command));
 
     // Assert
     assertEquals("Invalid password", exception.getMessage());

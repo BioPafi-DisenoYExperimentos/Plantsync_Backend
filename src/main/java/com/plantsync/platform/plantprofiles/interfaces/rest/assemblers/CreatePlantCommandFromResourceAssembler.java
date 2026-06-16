@@ -11,7 +11,9 @@ import java.time.LocalDate;
  * Create Plant Assembler.
  * */
 public class CreatePlantCommandFromResourceAssembler {
-
+  private CreatePlantCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * Create plant command to resource.
    * */

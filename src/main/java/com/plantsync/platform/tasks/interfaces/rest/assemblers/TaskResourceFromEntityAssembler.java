@@ -8,6 +8,9 @@ import com.plantsync.platform.tasks.interfaces.rest.resources.TaskResource;
  */
 public class TaskResourceFromEntityAssembler {
 
+  private TaskResourceFromEntityAssembler() {
+    // Utility class
+  }
   /**
    * To resource from entity task resource.
    *

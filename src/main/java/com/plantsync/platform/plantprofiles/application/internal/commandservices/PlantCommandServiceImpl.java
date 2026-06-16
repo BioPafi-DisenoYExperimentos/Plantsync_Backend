@@ -63,16 +63,7 @@ public class PlantCommandServiceImpl implements PlantCommandService {
     var plantToUpdate = result.get();
     try {
       var updatedPlant = plantRepository.save(
-          plantToUpdate.updateInformation(
-              command.name(),
-              command.species(),
-              command.acquisitionDate(),
-              command.humidity(),
-              command.nextWateringDate(),
-              command.imageUrl(),
-              command.notificationsEnabled(),
-              command.profileId()
-          )
+          plantToUpdate.updateInformation(command)
       );
       return Optional.of(updatedPlant);
     } catch (Exception e) {

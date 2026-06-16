@@ -7,7 +7,9 @@ import com.plantsync.platform.profiles.interfaces.rest.resources.ProfileResource
  * The type Profile resource from entity assembler.
  */
 public class ProfileResourceFromEntityAssembler {
-
+  private ProfileResourceFromEntityAssembler() {
+    // Utility class
+  }
   /**
    * To resource from entity profile resource.
    *

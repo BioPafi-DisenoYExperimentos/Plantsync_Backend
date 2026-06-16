@@ -1,6 +1,6 @@
 package com.plantsync.platform.iam.application.internal.eventhandlers;
 
-import com.plantsync.platform.iam.domain.model.commands.SeedRolesCommand;
+import com.plantsync.platform.iam.domain.model.commands.SeedRolesCommands;
 import com.plantsync.platform.iam.domain.services.RoleCommandService;
 import java.sql.Timestamp;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class ApplicationReadyEventHandler {
     var applicationName = event.getApplicationContext().getId();
     LOGGER.info("Starting to verify if roles seeding is needed for {} at {}",
         applicationName, currentTimestamp());
-    var seedRolesCommand = new SeedRolesCommand();
+    var seedRolesCommand = SeedRolesCommands.INSTANCE;
     roleCommandService.handle(seedRolesCommand);
     LOGGER.info("Roles seeding verification finished for {} at {}",
         applicationName, currentTimestamp());

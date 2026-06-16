@@ -1,6 +1,6 @@
 package com.plantsync.platform.profiles.interfaces.rest;
 
-import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQuery;
+import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQueries;
 import com.plantsync.platform.profiles.domain.model.queries.GetProfileByIdQuery;
 import com.plantsync.platform.profiles.domain.model.queries.GetProfileByUserIdQuery;
 import com.plantsync.platform.profiles.domain.services.ProfileQueryService;
@@ -71,7 +71,7 @@ public class ProfilesQueryController {
       @ApiResponse(responseCode = "200", description = "Profiles found"),
       @ApiResponse(responseCode = "404", description = "Profiles not found")})
   public ResponseEntity<List<ProfileResource>> getAllProfiles() {
-    var profiles = profileQueryService.handle(new GetAllProfilesQuery());
+    var profiles = profileQueryService.handle(GetAllProfilesQueries.INSTANCE);
     if (profiles.isEmpty()) {
       return ResponseEntity.notFound().build();
     }

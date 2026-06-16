@@ -6,7 +6,6 @@ import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
 import com.plantsync.platform.profiles.domain.model.valueobjects.SubscriptionPlan;
 import com.plantsync.platform.profiles.domain.model.valueobjects.UserId;
 import com.plantsync.platform.profiles.domain.services.ProfileCommandService;
-import com.plantsync.platform.profiles.domain.services.ProfileQueryService;
 import com.plantsync.platform.profiles.interfaces.acl.ProfilesContextFacade;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +16,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProfilesContextFacadeImpl implements ProfilesContextFacade {
   private final ProfileCommandService profileCommandService;
-  private final ProfileQueryService profileQueryService;
 
   /**
    * Constructor for ProfilesContextFacadeImpl.
    *
    * @param profileCommandService The profile command service.
-   * @param profileQueryService   The profile query service.
    */
-  public ProfilesContextFacadeImpl(ProfileCommandService profileCommandService,
-                                   ProfileQueryService profileQueryService) {
+  public ProfilesContextFacadeImpl(ProfileCommandService profileCommandService) {
     this.profileCommandService = profileCommandService;
-    this.profileQueryService = profileQueryService;
   }
 
   @Override

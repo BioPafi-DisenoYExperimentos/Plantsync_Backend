@@ -7,7 +7,9 @@ import com.plantsync.platform.plantprofiles.interfaces.rest.resources.PlantHisto
  * The type Plant history resource from entity assembler.
  */
 public class PlantHistoryResourceFromEntityAssembler {
-
+  private PlantHistoryResourceFromEntityAssembler() {
+    // Utility class
+  }
   /**
    * To resource from entity plant history resource.
    *

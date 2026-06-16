@@ -1,7 +1,7 @@
 package com.plantsync.platform.profiles.application.internal.queryservices;
 
 import com.plantsync.platform.profiles.domain.model.aggregates.Profile;
-import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQuery;
+import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQueries;
 import com.plantsync.platform.profiles.domain.model.queries.GetProfileByIdQuery;
 import com.plantsync.platform.profiles.domain.model.queries.GetProfileByUserIdQuery;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PaymentStatus;
@@ -52,7 +52,7 @@ class ProfileQueryServiceImplTest {
   @Test
   void handleGetAllProfilesQueryShouldReturnAllProfiles() {
     // Arrange
-    var query = new GetAllProfilesQuery();
+    var query = GetAllProfilesQueries.INSTANCE;
     var profiles = List.of(createProfile());
     when(profileRepository.findAll()).thenReturn(profiles);
 

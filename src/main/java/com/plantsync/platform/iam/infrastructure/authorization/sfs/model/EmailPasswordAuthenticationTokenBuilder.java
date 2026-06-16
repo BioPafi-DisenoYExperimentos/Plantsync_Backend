@@ -11,6 +11,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
  */
 public class EmailPasswordAuthenticationTokenBuilder {
 
+  private EmailPasswordAuthenticationTokenBuilder() {
+    // Utility class
+  }
   /**
    * This method is responsible for building the UsernamePasswordAuthenticationToken object.
    *

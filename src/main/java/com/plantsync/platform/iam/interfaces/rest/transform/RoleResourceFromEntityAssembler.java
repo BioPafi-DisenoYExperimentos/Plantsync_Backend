@@ -7,6 +7,9 @@ import com.plantsync.platform.iam.interfaces.rest.resources.RoleResource;
  * The type Role resource from entity assembler.
  */
 public class RoleResourceFromEntityAssembler {
+  private RoleResourceFromEntityAssembler() {
+    // Utility class
+  }
   /**
    * To resource from entity role resource.
    *

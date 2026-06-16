@@ -3,7 +3,7 @@ package com.plantsync.platform.plantprofiles.interfaces.rest;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.plantsync.platform.plantprofiles.domain.model.queries.GetAllPlantsByProfileIdQuery;
-import com.plantsync.platform.plantprofiles.domain.model.queries.GetAllPlantsQuery;
+import com.plantsync.platform.plantprofiles.domain.model.queries.GetAllPlantsQueries;
 import com.plantsync.platform.plantprofiles.domain.model.queries.GetPlantByIdQuery;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.ProfileId;
 import com.plantsync.platform.plantprofiles.domain.services.PlantQueryService;
@@ -11,7 +11,6 @@ import com.plantsync.platform.plantprofiles.interfaces.rest.assemblers.PlantReso
 import com.plantsync.platform.plantprofiles.interfaces.rest.resources.PlantResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -44,14 +43,15 @@ public class PlantQueryController {
    *
    * @return A list of all plants.
    */
-  @GetMapping
-  @Operation(summary = "Get all plants")
-  @ApiResponses({
-      @ApiResponse(responseCode = "200", description = "Plants found"),
-      @ApiResponse(responseCode = "404", description = "No plants found")
-  })
+  @Operation(
+          summary = "Get all plants",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "Plants found"),
+                  @ApiResponse(responseCode = "404", description = "No plants found")
+          }
+  )
   public ResponseEntity<List<PlantResource>> getAllPlants() {
-    var plants = plantQueryService.handle(new GetAllPlantsQuery());
+    var plants = plantQueryService.handle(GetAllPlantsQueries.INSTANCE);
 
     if (plants.isEmpty()) {
       return ResponseEntity.notFound().build();
@@ -72,10 +72,8 @@ public class PlantQueryController {
    */
   @GetMapping("/by-profile/{profileId}")
   @Operation(summary = "Get plants by profile ID")
-  @ApiResponses({
-      @ApiResponse(responseCode = "200", description = "Plants found for the user"),
-      @ApiResponse(responseCode = "404", description = "No plants found for the user")
-  })
+  @ApiResponse(responseCode = "200", description = "Plants found for the user")
+  @ApiResponse(responseCode = "404", description = "No plants found for the user")
   public ResponseEntity<List<PlantResource>> getAllPlantsByProfileId(@PathVariable Long profileId) {
     var plants = plantQueryService.handle(
         new GetAllPlantsByProfileIdQuery(new ProfileId(profileId)));
@@ -99,10 +97,8 @@ public class PlantQueryController {
    */
   @GetMapping("/{plantId}")
   @Operation(summary = "Get plant by ID")
-  @ApiResponses({
-      @ApiResponse(responseCode = "200", description = "Plant found for the user"),
-      @ApiResponse(responseCode = "404", description = "No plant found for the user")
-  })
+  @ApiResponse(responseCode = "200", description = "Plant found for the user")
+  @ApiResponse(responseCode = "404", description = "No plant found for the user")
   public ResponseEntity<PlantResource> getPlantById(@PathVariable Long plantId) {
     var getPlantByIdQuery = new GetPlantByIdQuery(plantId);
     var plant = plantQueryService.handle(getPlantByIdQuery);

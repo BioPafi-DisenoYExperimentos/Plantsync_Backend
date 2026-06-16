@@ -10,14 +10,5 @@ public record CreateProfileResource(
     Long userId
 
 ) {
-  /**
-   * Instantiates a new Create profile resource.
-   *
-   * @param personName       the person name
-   * @param subscriptionPlan the subscription plan
-   * @param userId           the user id
-   */
-  public CreateProfileResource {
 
-  }
 }

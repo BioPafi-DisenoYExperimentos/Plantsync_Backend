@@ -10,6 +10,10 @@ import java.util.List;
  * The type Sign up command from resource assembler.
  */
 public class SignUpCommandFromResourceAssembler {
+
+  private SignUpCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource sign up command.
    *

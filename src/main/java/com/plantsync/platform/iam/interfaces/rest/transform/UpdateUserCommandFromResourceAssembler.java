@@ -8,6 +8,9 @@ import com.plantsync.platform.iam.interfaces.rest.resources.UpdateUserResource;
  */
 public class UpdateUserCommandFromResourceAssembler {
 
+  private UpdateUserCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource update user command.
    *

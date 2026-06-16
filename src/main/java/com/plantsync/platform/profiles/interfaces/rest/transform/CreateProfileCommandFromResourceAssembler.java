@@ -10,7 +10,9 @@ import com.plantsync.platform.profiles.interfaces.rest.resources.CreateProfileRe
  * The type Create profile command from resource assembler.
  */
 public class CreateProfileCommandFromResourceAssembler {
-
+  private CreateProfileCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource create profile command.
    *
