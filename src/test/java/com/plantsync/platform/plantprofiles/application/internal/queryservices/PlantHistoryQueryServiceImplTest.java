@@ -3,6 +3,7 @@ package com.plantsync.platform.plantprofiles.application.internal.queryservices;
 import com.plantsync.platform.plantprofiles.domain.model.aggregates.PlantHistory;
 import com.plantsync.platform.plantprofiles.domain.model.commands.CreatePlantHistoryCommand;
 import com.plantsync.platform.plantprofiles.domain.model.queries.GetAllPlantHistoriesByPlantIdQuery;
+import com.plantsync.platform.plantprofiles.domain.model.queries.GetPlantHistoryByIdQuery;
 import com.plantsync.platform.plantprofiles.domain.model.queries.GetPlantHistoryByPlantIdQuery;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.PlantId;
 import com.plantsync.platform.plantprofiles.infrastructure.persistence.jpa.repositories.PlantHistoryRepository;
@@ -77,6 +78,30 @@ class PlantHistoryQueryServiceImplTest {
     // Assert
     assertEquals(histories, result);
     verify(plantHistoryRepository).findByPlantId(query.plantId());
+  }
+
+  @Test
+  void handleGetPlantHistoryByIdQueryShouldReturnHistoryWhenItExists() {
+    var query = new GetPlantHistoryByIdQuery(1L);
+    var plantHistory = createPlantHistory();
+    when(plantHistoryRepository.findById(query.id())).thenReturn(Optional.of(plantHistory));
+
+    var result = plantHistoryQueryService.handle(query);
+
+    assertTrue(result.isPresent());
+    assertSame(plantHistory, result.get());
+    verify(plantHistoryRepository).findById(query.id());
+  }
+
+  @Test
+  void handleGetPlantHistoryByIdQueryShouldReturnEmptyWhenHistoryDoesNotExist() {
+    var query = new GetPlantHistoryByIdQuery(99L);
+    when(plantHistoryRepository.findById(query.id())).thenReturn(Optional.empty());
+
+    var result = plantHistoryQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(plantHistoryRepository).findById(query.id());
   }
 
   private PlantHistory createPlantHistory() {
