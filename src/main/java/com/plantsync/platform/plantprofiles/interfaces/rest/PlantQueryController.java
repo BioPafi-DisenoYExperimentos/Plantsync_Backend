@@ -50,6 +50,7 @@ public class PlantQueryController {
                   @ApiResponse(responseCode = "404", description = "No plants found")
           }
   )
+  @GetMapping
   public ResponseEntity<List<PlantResource>> getAllPlants() {
     var plants = plantQueryService.handle(GetAllPlantsQueries.INSTANCE);
 
