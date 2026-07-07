@@ -33,7 +33,7 @@ class ProfilesContextFacadeImplTest {
         when(profileCommandService.handle(any(CreateProfileCommand.class)))
             .thenReturn(Optional.of(mockProfile));
 
-        Long result = profilesContextFacade.createProfile("Test Name", 1L, "basic");
+        Long result = profilesContextFacade.createProfile("Test Name", 1L, "basic", 30, "Male");
 
         assertEquals(42L, result);
         verify(profileCommandService).handle(any(CreateProfileCommand.class));
@@ -44,7 +44,7 @@ class ProfilesContextFacadeImplTest {
         when(profileCommandService.handle(any(CreateProfileCommand.class)))
             .thenReturn(Optional.empty());
 
-        Long result = profilesContextFacade.createProfile("Test Name", 1L, "basic");
+        Long result = profilesContextFacade.createProfile("Test Name", 1L, "basic", 30, "Male");
 
         assertEquals(0L, result);
         verify(profileCommandService).handle(any(CreateProfileCommand.class));

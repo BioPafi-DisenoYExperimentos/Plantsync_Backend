@@ -29,7 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -82,7 +84,7 @@ class IamIntegrationTest {
   void signUpShouldPersistUserAndAllowQueryByEmailAndId() {
     // Arrange
     var command = signUpCommand("registration.flow@plantsync.com");
-    when(profilesContextFacade.createProfile(eq(command.name()), anyLong(), eq(command.subscriptionPlan())))
+    when(profilesContextFacade.createProfile(eq(command.name()), anyLong(), eq(command.subscriptionPlan()), anyInt(), anyString()))
         .thenReturn(1L);
 
     // Act
@@ -95,7 +97,7 @@ class IamIntegrationTest {
     assertEquals(command.email(), queriedByEmail.getEmail());
     assertEquals(createdUser.getId(), queriedById.getId());
     assertTrue(queriedById.getRoles().stream().anyMatch(role -> role.getName() == Roles.ROLE_USER));
-    verify(profilesContextFacade).createProfile(command.name(), createdUser.getId(), command.subscriptionPlan());
+    verify(profilesContextFacade).createProfile(command.name(), createdUser.getId(), command.subscriptionPlan(), command.age(), command.gender());
   }
 
   @Test
@@ -104,7 +106,7 @@ class IamIntegrationTest {
     // Arrange
     var password = "plain-password";
     var command = signUpCommand("login.flow@plantsync.com", password);
-    when(profilesContextFacade.createProfile(eq(command.name()), anyLong(), eq(command.subscriptionPlan())))
+    when(profilesContextFacade.createProfile(eq(command.name()), anyLong(), eq(command.subscriptionPlan()), anyInt(), anyString()))
         .thenReturn(1L);
     var createdUser = userCommandService.handle(command).orElseThrow();
 
@@ -124,7 +126,7 @@ class IamIntegrationTest {
     // Arrange
     var command = signUpCommand("update.flow@plantsync.com");
     var updatedEmail = "updated.flow@plantsync.com";
-    when(profilesContextFacade.createProfile(eq(command.name()), anyLong(), eq(command.subscriptionPlan())))
+    when(profilesContextFacade.createProfile(eq(command.name()), anyLong(), eq(command.subscriptionPlan()), anyInt(), anyString()))
         .thenReturn(1L);
     var createdUser = userCommandService.handle(command).orElseThrow();
 
@@ -144,9 +146,9 @@ class IamIntegrationTest {
     // Arrange
     var firstCommand = signUpCommand("list.first@plantsync.com");
     var secondCommand = signUpCommand("list.second@plantsync.com");
-    when(profilesContextFacade.createProfile(eq(firstCommand.name()), anyLong(), eq(firstCommand.subscriptionPlan())))
+    when(profilesContextFacade.createProfile(eq(firstCommand.name()), anyLong(), eq(firstCommand.subscriptionPlan()), anyInt(), anyString()))
         .thenReturn(1L);
-    when(profilesContextFacade.createProfile(eq(secondCommand.name()), anyLong(), eq(secondCommand.subscriptionPlan())))
+    when(profilesContextFacade.createProfile(eq(secondCommand.name()), anyLong(), eq(secondCommand.subscriptionPlan()), anyInt(), anyString()))
         .thenReturn(2L);
     var firstUser = userCommandService.handle(firstCommand).orElseThrow();
     var secondUser = userCommandService.handle(secondCommand).orElseThrow();
@@ -170,7 +172,9 @@ class IamIntegrationTest {
         password,
         List.of(new Role(Roles.ROLE_USER)),
         email,
-        "BASIC"
+        "BASIC",
+        30,
+        "Male"
     );
   }
 }

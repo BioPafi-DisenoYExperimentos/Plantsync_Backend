@@ -4,6 +4,7 @@ import com.plantsync.platform.profiles.domain.exceptions.ProfileUpdateException;
 import com.plantsync.platform.profiles.domain.model.aggregates.Profile;
 import com.plantsync.platform.profiles.domain.model.commands.CreateProfileCommand;
 import com.plantsync.platform.profiles.domain.model.commands.UpdateProfileCommand;
+import com.plantsync.platform.profiles.domain.model.valueobjects.Gender;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PaymentStatus;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
 import com.plantsync.platform.profiles.domain.model.valueobjects.SubscriptionPlan;
@@ -42,7 +43,9 @@ class ProfileCommandServiceImplTest {
     var command = new CreateProfileCommand(
         new PersonName("Plant Owner"),
         SubscriptionPlan.BASIC,
-        new UserId(1L)
+        new UserId(1L),
+        30,
+        Gender.MALE
     );
     var profileCaptor = ArgumentCaptor.forClass(Profile.class);
 

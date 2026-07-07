@@ -115,7 +115,9 @@ class UserCommandServiceImplTest {
         "plain-password",
         List.of(role),
         "owner@plantsync.com",
-        "FREE"
+        "FREE",
+        30,
+        "Male"
     );
     var createdUser = new User(command.email(), "encoded-password", List.of(role));
     var userCaptor = ArgumentCaptor.forClass(User.class);
@@ -134,7 +136,7 @@ class UserCommandServiceImplTest {
     assertEquals(command.email(), userCaptor.getValue().getEmail());
     assertEquals("encoded-password", userCaptor.getValue().getPassword());
     assertTrue(userCaptor.getValue().getRoles().contains(role));
-    verify(profilesContextFacade).createProfile(command.name(), null, command.subscriptionPlan());
+    verify(profilesContextFacade).createProfile(command.name(), null, command.subscriptionPlan(), command.age(), command.gender());
   }
 
   @Test
@@ -145,7 +147,9 @@ class UserCommandServiceImplTest {
         "plain-password",
         List.of(new Role(Roles.ROLE_USER)),
         "owner@plantsync.com",
-        "FREE"
+        "FREE",
+        30,
+        "Male"
     );
     when(userRepository.existsByEmail(command.email())).thenReturn(true);
 
@@ -155,7 +159,7 @@ class UserCommandServiceImplTest {
     // Assert
     assertEquals("User with email 'owner@plantsync.com' already exists.", exception.getMessage());
     verify(userRepository, never()).save(any(User.class));
-    verify(profilesContextFacade, never()).createProfile(any(), isNull(), any());
+    verify(profilesContextFacade, never()).createProfile(any(), any(), any(), any(), any());
   }
 
   @Test
@@ -166,7 +170,9 @@ class UserCommandServiceImplTest {
         "plain-password",
         List.of(new Role(Roles.ROLE_USER)),
         "owner@plantsync.com",
-        "FREE"
+        "FREE",
+        30,
+        "Male"
     );
     when(userRepository.existsByEmail(command.email())).thenReturn(false);
     when(roleRepository.findByName(Roles.ROLE_USER)).thenReturn(Optional.empty());
@@ -177,7 +183,7 @@ class UserCommandServiceImplTest {
     // Assert
     assertEquals("Role with name 'ROLE_USER' not found.", exception.getMessage());
     verify(userRepository, never()).save(any(User.class));
-    verify(profilesContextFacade, never()).createProfile(any(), any(), any());
+    verify(profilesContextFacade, never()).createProfile(any(), any(), any(), any(), any());
   }
 
   @Test
