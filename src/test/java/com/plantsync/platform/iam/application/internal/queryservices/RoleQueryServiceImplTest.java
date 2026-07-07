@@ -45,6 +45,17 @@ class RoleQueryServiceImplTest {
   }
 
   @Test
+  void handleGetRoleByNameQueryShouldReturnEmptyWhenRoleDoesNotExist() {
+    var query = new GetRoleByNameQuery(Roles.ROLE_USER);
+    when(roleRepository.findByName(query.name())).thenReturn(Optional.empty());
+
+    var result = roleQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(roleRepository).findByName(query.name());
+  }
+
+  @Test
   void handleGetRoleByNameQueryShouldReturnRoleWhenItExists() {
     // Arrange
     var query = new GetRoleByNameQuery(Roles.ROLE_USER);

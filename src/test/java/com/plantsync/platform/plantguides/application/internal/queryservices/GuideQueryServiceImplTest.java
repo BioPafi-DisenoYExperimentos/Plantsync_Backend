@@ -43,6 +43,17 @@ class GuideQueryServiceImplTest {
   }
 
   @Test
+  void handleGetGuideByIdQueryShouldReturnEmptyWhenGuideDoesNotExist() {
+    var query = new GetGuideByIdQuery(99L);
+    when(guideRepository.findById(query.guideId())).thenReturn(Optional.empty());
+
+    var result = guideQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(guideRepository).findById(query.guideId());
+  }
+
+  @Test
   void handleGetGuideByIdQueryShouldReturnGuideWhenItExists() {
     // Arrange
     var query = new GetGuideByIdQuery(1L);

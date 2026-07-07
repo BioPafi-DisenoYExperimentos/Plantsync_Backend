@@ -48,6 +48,17 @@ class TaskQueryServiceImplTest {
   }
 
   @Test
+  void handleGetTaskByIdQueryShouldReturnEmptyWhenTaskDoesNotExist() {
+    var query = new GetTaskByIdQuery(99L);
+    when(taskRepository.findById(query.taskId())).thenReturn(Optional.empty());
+
+    var result = taskQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(taskRepository).findById(query.taskId());
+  }
+
+  @Test
   void handleGetTaskByIdQueryShouldReturnTaskWhenItExists() {
     // Arrange
     var query = new GetTaskByIdQuery(1L);

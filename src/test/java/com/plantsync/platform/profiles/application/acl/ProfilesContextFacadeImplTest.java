@@ -40,6 +40,19 @@ class ProfilesContextFacadeImplTest {
     }
 
     @Test
+    void createProfileShouldHandleNullGender() {
+        var mockProfile = mock(Profile.class);
+        when(mockProfile.getId()).thenReturn(42L);
+        when(profileCommandService.handle(any(CreateProfileCommand.class)))
+            .thenReturn(Optional.of(mockProfile));
+
+        Long result = profilesContextFacade.createProfile("Test Name", 1L, "basic", 30, null);
+
+        assertEquals(42L, result);
+        verify(profileCommandService).handle(any(CreateProfileCommand.class));
+    }
+
+    @Test
     void createProfileShouldReturnZeroWhenProfileCreationReturnsEmpty() {
         when(profileCommandService.handle(any(CreateProfileCommand.class)))
             .thenReturn(Optional.empty());

@@ -44,6 +44,17 @@ class UserQueryServiceImplTest {
   }
 
   @Test
+  void handleGetUserByIdQueryShouldReturnEmptyWhenUserDoesNotExist() {
+    var query = new GetUserByIdQuery(99L);
+    when(userRepository.findById(query.userId())).thenReturn(Optional.empty());
+
+    var result = userQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(userRepository).findById(query.userId());
+  }
+
+  @Test
   void handleGetUserByIdQueryShouldReturnUserWhenItExists() {
     // Arrange
     var query = new GetUserByIdQuery(1L);
@@ -57,6 +68,17 @@ class UserQueryServiceImplTest {
     assertTrue(result.isPresent());
     assertSame(user, result.get());
     verify(userRepository).findById(query.userId());
+  }
+
+  @Test
+  void handleGetUserByEmailQueryShouldReturnEmptyWhenUserDoesNotExist() {
+    var query = new GetUserByEmailQuery("unknown@plantsync.com");
+    when(userRepository.findByEmail(query.email())).thenReturn(Optional.empty());
+
+    var result = userQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(userRepository).findByEmail(query.email());
   }
 
   @Test

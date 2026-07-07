@@ -34,6 +34,17 @@ class ProfileQueryServiceImplTest {
   private ProfileQueryServiceImpl profileQueryService;
 
   @Test
+  void handleGetProfileByIdQueryShouldReturnEmptyWhenProfileDoesNotExist() {
+    var query = new GetProfileByIdQuery(99L);
+    when(profileRepository.findById(query.profileId())).thenReturn(Optional.empty());
+
+    var result = profileQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(profileRepository).findById(query.profileId());
+  }
+
+  @Test
   void handleGetProfileByIdQueryShouldReturnProfileWhenItExists() {
     // Arrange
     var query = new GetProfileByIdQuery(1L);
@@ -62,6 +73,17 @@ class ProfileQueryServiceImplTest {
     // Assert
     assertEquals(profiles, result);
     verify(profileRepository).findAll();
+  }
+
+  @Test
+  void handleGetProfileByUserIdQueryShouldReturnEmptyWhenProfileDoesNotExist() {
+    var query = new GetProfileByUserIdQuery(99L);
+    when(profileRepository.findById(query.userId())).thenReturn(Optional.empty());
+
+    var result = profileQueryService.handle(query);
+
+    assertTrue(result.isEmpty());
+    verify(profileRepository).findById(query.userId());
   }
 
   @Test
