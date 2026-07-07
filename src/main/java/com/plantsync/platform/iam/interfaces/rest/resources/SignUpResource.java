@@ -26,5 +26,8 @@ public record SignUpResource(
     String password,
 
     @NotNull(message = "Subscription plan is required")
-    String subscriptionPlan) {
+    String subscriptionPlan,
+    
+    Integer age,
+    String gender) {
 }

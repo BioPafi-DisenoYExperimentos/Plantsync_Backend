@@ -15,5 +15,5 @@ import java.util.List;
  * @param subscriptionPlan The subscription plan of the user.
  */
 public record SignUpCommand(String name, String password, List<Role> roles,
-                            String email, String subscriptionPlan) {
+                            String email, String subscriptionPlan, Integer age, String gender) {
 }

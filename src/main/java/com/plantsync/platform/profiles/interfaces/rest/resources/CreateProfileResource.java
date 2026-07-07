@@ -7,7 +7,9 @@ public record CreateProfileResource(
 
     String personName,
     String subscriptionPlan,
-    Long userId
+    Long userId,
+    Integer age,
+    String gender
 
 ) {
 

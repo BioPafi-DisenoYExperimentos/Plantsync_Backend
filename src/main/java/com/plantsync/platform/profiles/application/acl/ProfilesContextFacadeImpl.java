@@ -27,11 +27,13 @@ public class ProfilesContextFacadeImpl implements ProfilesContextFacade {
   }
 
   @Override
-  public Long createProfile(String name, Long userId, String subscriptionPlan) {
+  public Long createProfile(String name, Long userId, String subscriptionPlan, Integer age, String gender) {
     var command = new CreateProfileCommand(
         new PersonName(name),
         SubscriptionPlan.fromString(subscriptionPlan),
-        new UserId(userId));
+        new UserId(userId),
+        age,
+        gender != null ? com.plantsync.platform.profiles.domain.model.valueobjects.Gender.fromString(gender) : null);
     var profile = profileCommandService.handle(command);
     return profile.map(Profile::getId).orElse(0L);
   }

@@ -27,7 +27,9 @@ public class SignUpCommandFromResourceAssembler {
         resource.password(),
         List.of(new Role(Roles.ROLE_USER)), // o lo que definas por defecto
         resource.email(),
-        resource.subscriptionPlan()
+        resource.subscriptionPlan(),
+        resource.age(),
+        resource.gender()
     );
   }
 }

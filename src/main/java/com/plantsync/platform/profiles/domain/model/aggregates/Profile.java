@@ -1,6 +1,7 @@
 package com.plantsync.platform.profiles.domain.model.aggregates;
 
 import com.plantsync.platform.profiles.domain.model.commands.CreateProfileCommand;
+import com.plantsync.platform.profiles.domain.model.valueobjects.Gender;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PaymentStatus;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
 import com.plantsync.platform.profiles.domain.model.valueobjects.SubscriptionPlan;
@@ -51,6 +52,19 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
   private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
   /**
+   * The age of the user.
+   */
+  @Column(name = "age")
+  private Integer age;
+
+  /**
+   * The gender of the user.
+   */
+  @Enumerated(EnumType.STRING)
+  @Column(name = "gender")
+  private Gender gender;
+
+  /**
    * Default constructor required by JPA.
    */
   public Profile() {
@@ -67,6 +81,8 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
     this.subscriptionPlan = command.subscriptionPlan();
     this.userId = command.userId();
     this.paymentStatus = PaymentStatus.PENDING;
+    this.age = command.age();
+    this.gender = command.gender();
   }
 
   /**

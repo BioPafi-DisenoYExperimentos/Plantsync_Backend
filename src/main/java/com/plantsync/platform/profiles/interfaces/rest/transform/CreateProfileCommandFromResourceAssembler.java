@@ -1,6 +1,7 @@
 package com.plantsync.platform.profiles.interfaces.rest.transform;
 
 import com.plantsync.platform.profiles.domain.model.commands.CreateProfileCommand;
+import com.plantsync.platform.profiles.domain.model.valueobjects.Gender;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
 import com.plantsync.platform.profiles.domain.model.valueobjects.SubscriptionPlan;
 import com.plantsync.platform.profiles.domain.model.valueobjects.UserId;
@@ -23,6 +24,8 @@ public class CreateProfileCommandFromResourceAssembler {
     return new CreateProfileCommand(
         new PersonName(resource.personName()),
         SubscriptionPlan.valueOf(resource.subscriptionPlan().toUpperCase()),
-        new UserId(resource.userId()));
+        new UserId(resource.userId()),
+        resource.age(),
+        resource.gender() != null ? Gender.fromString(resource.gender()) : null);
   }
 }

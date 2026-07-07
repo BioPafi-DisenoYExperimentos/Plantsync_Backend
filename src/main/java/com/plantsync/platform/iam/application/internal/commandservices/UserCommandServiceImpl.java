@@ -101,7 +101,9 @@ public class UserCommandServiceImpl implements UserCommandService {
     profilesContextFacade.createProfile(
         command.name(),
         createdUser.getId(),
-        command.subscriptionPlan()
+        command.subscriptionPlan(),
+        command.age(),
+        command.gender()
     );
 
     return Optional.of(createdUser);
