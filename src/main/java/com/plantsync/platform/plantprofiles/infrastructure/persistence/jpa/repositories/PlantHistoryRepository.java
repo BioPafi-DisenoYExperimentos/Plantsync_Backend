@@ -25,4 +25,7 @@ public interface PlantHistoryRepository extends JpaRepository<PlantHistory, Long
    * @return An {@link Optional} containing the {@link PlantHistory} if found.
    */
   Optional<PlantHistory> findFirstByPlantId(PlantId plantId);
+
+  @org.springframework.transaction.annotation.Transactional
+  void deleteByPlantId(PlantId plantId);
 }

@@ -7,6 +7,9 @@ import com.plantsync.platform.iam.interfaces.rest.resources.SignInResource;
  * The type Sign in command from resource assembler.
  */
 public class SignInCommandFromResourceAssembler {
+  private SignInCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource sign in command.
    *

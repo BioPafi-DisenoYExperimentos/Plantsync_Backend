@@ -7,6 +7,9 @@ import com.plantsync.platform.profiles.interfaces.rest.resources.UpdateProfileRe
  * The type Update profile command from resource assembler.
  */
 public class UpdateProfileCommandFromResourceAssembler {
+  private UpdateProfileCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource update profile command.
    *

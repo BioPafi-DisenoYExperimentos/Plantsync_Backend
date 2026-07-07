@@ -2,7 +2,7 @@ package com.plantsync.platform.plantguides.interfaces.rest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.plantsync.platform.plantguides.domain.model.queries.GetAllGuidesQuery;
+import com.plantsync.platform.plantguides.domain.model.queries.GetAllGuidesQueries;
 import com.plantsync.platform.plantguides.domain.model.queries.GetGuideByIdQuery;
 import com.plantsync.platform.plantguides.domain.services.GuideQueryService;
 import com.plantsync.platform.plantguides.interfaces.rest.assemblers.GuideResourceFromEntityAssembler;
@@ -49,7 +49,7 @@ public class GuideQueryController {
       @ApiResponse(responseCode = "200", description = "Guides found"),
       @ApiResponse(responseCode = "404", description = "Guides not found or non existent")})
   public ResponseEntity<List<GuideResource>> getAllGuides() {
-    var guides = guideQueryService.handle(new GetAllGuidesQuery());
+    var guides = guideQueryService.handle(GetAllGuidesQueries.INSTANCE);
     if (guides.isEmpty()) {
       return ResponseEntity.notFound().build();
     }

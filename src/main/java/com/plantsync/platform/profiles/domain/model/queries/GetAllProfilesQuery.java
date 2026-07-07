@@ -1,7 +1,7 @@
 package com.plantsync.platform.profiles.domain.model.queries;
 
 /**
- * The type Get all profiles query.
+ * Query to retrieve all profiles.
  */
-public record GetAllProfilesQuery() {
+public interface GetAllProfilesQuery {
 }

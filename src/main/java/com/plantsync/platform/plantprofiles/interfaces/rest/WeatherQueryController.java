@@ -30,7 +30,7 @@ public class WeatherQueryController {
    * @return the weather by city
    */
   @GetMapping("/city")
-  public ResponseEntity<?> getWeatherByCity(@RequestParam String city) {
+  public ResponseEntity<String> getWeatherByCity(@RequestParam String city) {
     String url = "https://api.openweathermap.org/data/2.5/weather?q="
         + city + "&appid=" + apiKey + "&units=metric";
 

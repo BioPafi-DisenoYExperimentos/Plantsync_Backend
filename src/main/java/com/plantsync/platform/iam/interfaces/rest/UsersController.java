@@ -1,6 +1,6 @@
 package com.plantsync.platform.iam.interfaces.rest;
 
-import com.plantsync.platform.iam.domain.model.queries.GetAllUsersQuery;
+import com.plantsync.platform.iam.domain.model.queries.GetAllUsersQueries;
 import com.plantsync.platform.iam.domain.model.queries.GetUserByIdQuery;
 import com.plantsync.platform.iam.domain.services.UserCommandService;
 import com.plantsync.platform.iam.domain.services.UserQueryService;
@@ -57,7 +57,7 @@ public class UsersController {
       @ApiResponse(responseCode = "200", description = "Users retrieved successfully."),
       @ApiResponse(responseCode = "401", description = "Unauthorized.")})
   public ResponseEntity<List<UserResource>> getAllUsers() {
-    var getAllUsersQuery = new GetAllUsersQuery();
+    var getAllUsersQuery = GetAllUsersQueries.INSTANCE;
     var users = userQueryService.handle(getAllUsersQuery);
     var userResources = users.stream()
         .map(UserResourceFromEntityAssembler::toResourceFromEntity)

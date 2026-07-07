@@ -8,6 +8,9 @@ import com.plantsync.platform.plantguides.interfaces.rest.resources.CreateGuideR
  * */
 public class CreateGuideCommandFromResourceAssembler {
 
+  private CreateGuideCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * CreateGuideCommand converted to resource.
    * */

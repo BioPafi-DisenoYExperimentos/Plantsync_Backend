@@ -1,7 +1,7 @@
 package com.plantsync.platform.iam.application.internal.queryservices;
 
 import com.plantsync.platform.iam.domain.model.entities.Role;
-import com.plantsync.platform.iam.domain.model.queries.GetAllRolesQuery;
+import com.plantsync.platform.iam.domain.model.queries.GetAllRolesQueries;
 import com.plantsync.platform.iam.domain.model.queries.GetRoleByNameQuery;
 import com.plantsync.platform.iam.domain.model.valueobjects.Roles;
 import com.plantsync.platform.iam.infrastructure.persistence.jpa.respositories.RoleRepository;
@@ -32,7 +32,7 @@ class RoleQueryServiceImplTest {
   @Test
   void handleGetAllRolesQueryShouldReturnAllRoles() {
     // Arrange
-    var query = new GetAllRolesQuery();
+    var query = GetAllRolesQueries.INSTANCE;
     var roles = List.of(new Role(Roles.ROLE_USER));
     when(roleRepository.findAll()).thenReturn(roles);
 

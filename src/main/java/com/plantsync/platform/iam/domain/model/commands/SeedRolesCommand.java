@@ -1,7 +1,7 @@
 package com.plantsync.platform.iam.domain.model.commands;
 
 /**
- * The type Seed roles command.
+ * Command to seed default roles into the system.
  */
-public record SeedRolesCommand() {
+public interface SeedRolesCommand {
 }

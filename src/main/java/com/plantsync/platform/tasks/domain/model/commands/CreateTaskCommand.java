@@ -17,17 +17,4 @@ public record CreateTaskCommand(
 
 
 ) {
-
-  /**
-   * Instantiates a new Create task command.
-   *
-   * @param date      the date
-   * @param action    the action
-   * @param completed the completed
-   * @param plantId   the plant id
-   * @param profileId the profile id
-   */
-  public CreateTaskCommand {
-
-  }
 }

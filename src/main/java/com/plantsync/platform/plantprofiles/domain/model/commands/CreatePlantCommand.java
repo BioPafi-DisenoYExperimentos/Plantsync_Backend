@@ -29,10 +29,5 @@ public record CreatePlantCommand(
 
 ) {
 
-  /**
-   * Constructor.
-   */
-  public CreatePlantCommand {
 
-  }
 }

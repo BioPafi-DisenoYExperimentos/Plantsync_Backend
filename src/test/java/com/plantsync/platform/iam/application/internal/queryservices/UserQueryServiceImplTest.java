@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.plantsync.platform.iam.domain.model.aggregates.User;
-import com.plantsync.platform.iam.domain.model.queries.GetAllUsersQuery;
+import com.plantsync.platform.iam.domain.model.queries.GetAllUsersQueries;
 import com.plantsync.platform.iam.domain.model.queries.GetUserByEmailQuery;
 import com.plantsync.platform.iam.domain.model.queries.GetUserByIdQuery;
 import com.plantsync.platform.iam.infrastructure.persistence.jpa.respositories.UserRepository;
@@ -31,7 +31,7 @@ class UserQueryServiceImplTest {
   @Test
   void handleGetAllUsersQueryShouldReturnAllUsers() {
     // Arrange
-    var query = new GetAllUsersQuery();
+    var query = GetAllUsersQueries.INSTANCE;
     var users = List.of(new User("owner@plantsync.com", "hashed-password"));
     when(userRepository.findAll()).thenReturn(users);
 

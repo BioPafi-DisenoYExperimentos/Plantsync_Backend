@@ -3,8 +3,9 @@ package com.plantsync.platform.profiles.application.internal;
 import com.plantsync.platform.profiles.domain.model.aggregates.Profile;
 import com.plantsync.platform.profiles.domain.model.commands.CreateProfileCommand;
 import com.plantsync.platform.profiles.domain.model.commands.UpdateProfileCommand;
-import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQuery;
+import com.plantsync.platform.profiles.domain.model.queries.GetAllProfilesQueries;
 import com.plantsync.platform.profiles.domain.model.queries.GetProfileByIdQuery;
+import com.plantsync.platform.profiles.domain.model.valueobjects.Gender;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PaymentStatus;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
 import com.plantsync.platform.profiles.domain.model.valueobjects.SubscriptionPlan;
@@ -57,7 +58,9 @@ class ProfilesIntegrationTest {
         CreateProfileCommand command = new CreateProfileCommand(
                 new PersonName("John Doe"),
                 SubscriptionPlan.BASIC,
-                new UserId(100L));
+                new UserId(100L),
+                30,
+                Gender.MALE);
 
         // Act
         profileCommandService.handle(command);
@@ -84,7 +87,9 @@ class ProfilesIntegrationTest {
         CreateProfileCommand createCommand = new CreateProfileCommand(
                 new PersonName("Jane Doe"),
                 SubscriptionPlan.BASIC,
-                new UserId(101L));
+                new UserId(101L),
+                25,
+                Gender.FEMALE);
         profileCommandService.handle(createCommand);
 
         Profile savedProfile = profileRepository.findAll().get(0);
@@ -109,15 +114,15 @@ class ProfilesIntegrationTest {
     void getAllProfilesShouldReturnAllCreatedProfiles() {
         // Arrange
         CreateProfileCommand command1 = new CreateProfileCommand(
-                new PersonName("User One"), SubscriptionPlan.BASIC, new UserId(1L));
+                new PersonName("User One"), SubscriptionPlan.BASIC, new UserId(1L), 30, Gender.MALE);
         CreateProfileCommand command2 = new CreateProfileCommand(
-                new PersonName("User Two"), SubscriptionPlan.PREMIUM, new UserId(2L));
+                new PersonName("User Two"), SubscriptionPlan.PREMIUM, new UserId(2L), 25, Gender.FEMALE);
 
         profileCommandService.handle(command1);
         profileCommandService.handle(command2);
 
         // Act
-        List<Profile> profiles = profileQueryService.handle(new GetAllProfilesQuery());
+        List<Profile> profiles = profileQueryService.handle(GetAllProfilesQueries.INSTANCE);
 
         // Assert
         assertNotNull(profiles);

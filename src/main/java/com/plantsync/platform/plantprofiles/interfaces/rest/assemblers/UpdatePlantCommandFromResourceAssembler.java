@@ -11,7 +11,9 @@ import java.time.LocalDate;
  * The type Update plant command from resource assembler.
  */
 public class UpdatePlantCommandFromResourceAssembler {
-
+  private UpdatePlantCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource update plant command.
    *

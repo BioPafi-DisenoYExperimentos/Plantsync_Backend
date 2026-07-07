@@ -11,10 +11,10 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TaskTests {
+class TaskTests {
 
   @Test
-  public void constructor_WithValidData_ShouldCreateTaskCorrectly() {
+  void constructor_WithValidData_ShouldCreateTaskCorrectly() {
     // Arrange
     LocalDate date = LocalDate.of(2025, 7, 3);
     String action = "Watering";
@@ -36,7 +36,7 @@ public class TaskTests {
   }
 
   @Test
-  public void constructor_WithNullAction_ShouldAcceptNullIfNoValidation() {
+  void constructor_WithNullAction_ShouldAcceptNullIfNoValidation() {
 
     CreateTaskCommand command = new CreateTaskCommand(
         LocalDate.now(), null, false, new PlantId(1L), new ProfileId(1L)

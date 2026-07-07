@@ -1,6 +1,6 @@
 package com.plantsync.platform.iam.application.internal.commandservices;
 
-import com.plantsync.platform.iam.domain.model.commands.SeedRolesCommand;
+import com.plantsync.platform.iam.domain.model.commands.SeedRolesCommands;
 import com.plantsync.platform.iam.domain.model.entities.Role;
 import com.plantsync.platform.iam.domain.model.valueobjects.Roles;
 import com.plantsync.platform.iam.infrastructure.persistence.jpa.respositories.RoleRepository;
@@ -9,11 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.ArgumentCaptor;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class RoleCommandServiceImplTest {
@@ -27,7 +28,7 @@ class RoleCommandServiceImplTest {
   @Test
   void handleSeedRolesCommandShouldSaveMissingRoles() {
     // Arrange
-    var command = new SeedRolesCommand();
+    var command = SeedRolesCommands.INSTANCE;
     when(roleRepository.existsByName(Roles.ROLE_USER)).thenReturn(false);
     var roleCaptor = ArgumentCaptor.forClass(Role.class);
 
@@ -43,7 +44,7 @@ class RoleCommandServiceImplTest {
   @Test
   void handleSeedRolesCommandShouldNotSaveExistingRoles() {
     // Arrange
-    var command = new SeedRolesCommand();
+    var command = SeedRolesCommands.INSTANCE;
     when(roleRepository.existsByName(Roles.ROLE_USER)).thenReturn(true);
 
     // Act

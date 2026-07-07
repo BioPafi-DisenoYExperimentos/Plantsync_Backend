@@ -9,6 +9,9 @@ import com.plantsync.platform.plantguides.interfaces.rest.resources.GuideResourc
 
 public class GuideResourceFromEntityAssembler {
 
+  private GuideResourceFromEntityAssembler() {
+    // Utility class
+  }
   /**
    * Converts a {@link Guide} entity to a {@link GuideResource}.
    *

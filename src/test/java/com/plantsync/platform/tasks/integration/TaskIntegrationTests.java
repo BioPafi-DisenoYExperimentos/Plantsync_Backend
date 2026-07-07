@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class TaskIntegrationTests {
+class TaskIntegrationTests {
 
   @Autowired
   private MockMvc mockMvc;
@@ -40,7 +40,7 @@ public class TaskIntegrationTests {
 
   @Test
   @WithMockUser
-  public void createTask_ShouldReturnCreatedAndPersistInDatabase() throws Exception {
+  void createTask_ShouldReturnCreatedAndPersistInDatabase() throws Exception {
     // Arrange
     CreateTaskResource resource = new CreateTaskResource(
         "Watering",
@@ -66,7 +66,7 @@ public class TaskIntegrationTests {
 
   @Test
   @WithMockUser
-  public void getAllTasks_ShouldReturnTasksList() throws Exception {
+  void getAllTasks_ShouldReturnTasksList() throws Exception {
     // Arrange
     CreateTaskResource resource = new CreateTaskResource(
         "Fertilizing",

@@ -1,6 +1,6 @@
 package com.plantsync.platform.iam.interfaces.rest;
 
-import com.plantsync.platform.iam.domain.model.queries.GetAllRolesQuery;
+import com.plantsync.platform.iam.domain.model.queries.GetAllRolesQueries;
 import com.plantsync.platform.iam.domain.services.RoleQueryService;
 import com.plantsync.platform.iam.interfaces.rest.resources.RoleResource;
 import com.plantsync.platform.iam.interfaces.rest.transform.RoleResourceFromEntityAssembler;
@@ -46,7 +46,7 @@ public class RolesController {
       @ApiResponse(responseCode = "200", description = "Roles retrieved successfully."),
       @ApiResponse(responseCode = "401", description = "Unauthorized.")})
   public ResponseEntity<List<RoleResource>> getAllRoles() {
-    var getAllRolesQuery = new GetAllRolesQuery();
+    var getAllRolesQuery = GetAllRolesQueries.INSTANCE;
     var roles = roleQueryService.handle(getAllRolesQuery);
     var roleResources = roles.stream()
         .map(RoleResourceFromEntityAssembler::toResourceFromEntity)

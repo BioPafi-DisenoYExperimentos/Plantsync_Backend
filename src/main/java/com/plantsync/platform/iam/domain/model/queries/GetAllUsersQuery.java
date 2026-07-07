@@ -1,7 +1,7 @@
 package com.plantsync.platform.iam.domain.model.queries;
 
 /**
- * The type Get all users query.
+ * Query to retrieve all users.
  */
-public record GetAllUsersQuery() {
+public interface GetAllUsersQuery {
 }

@@ -1,7 +1,7 @@
 package com.plantsync.platform.tasks.domain.model.queries;
 
 /**
- * The type Get all tasks query.
+ * Query to retrieve all tasks.
  */
-public record GetAllTasksQuery() {
+public interface GetAllTasksQuery {
 }

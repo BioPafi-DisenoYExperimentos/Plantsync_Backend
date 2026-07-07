@@ -2,13 +2,12 @@ package com.plantsync.platform.tasks.interfaces.rest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.plantsync.platform.tasks.domain.model.queries.GetAllTasksQuery;
+import com.plantsync.platform.tasks.domain.model.queries.GetAllTasksQueries;
 import com.plantsync.platform.tasks.domain.services.TaskQueryService;
 import com.plantsync.platform.tasks.interfaces.rest.assemblers.TaskResourceFromEntityAssembler;
 import com.plantsync.platform.tasks.interfaces.rest.resources.TaskResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -43,12 +42,10 @@ public class TaskQueryController {
    */
   @GetMapping
   @Operation(summary = "Get all tasks")
-  @ApiResponses({
-      @ApiResponse(responseCode = "200", description = "Tasks found"),
-      @ApiResponse(responseCode = "404", description = "No tasks found")
-  })
+  @ApiResponse(responseCode = "200", description = "Tasks found")
+  @ApiResponse(responseCode = "404", description = "No tasks found")
   public ResponseEntity<List<TaskResource>> getAllTasks() {
-    var tasks = taskQueryService.handle(new GetAllTasksQuery());
+    var tasks = taskQueryService.handle(GetAllTasksQueries.INSTANCE);
 
     if (tasks.isEmpty()) {
       return ResponseEntity.notFound().build();

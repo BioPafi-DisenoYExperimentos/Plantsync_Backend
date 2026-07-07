@@ -2,7 +2,7 @@ package com.plantsync.platform.plantguides.application.internal;
 
 import com.plantsync.platform.plantguides.domain.model.aggregates.Guide;
 import com.plantsync.platform.plantguides.domain.model.commands.CreateGuideCommand;
-import com.plantsync.platform.plantguides.domain.model.queries.GetAllGuidesQuery;
+import com.plantsync.platform.plantguides.domain.model.queries.GetAllGuidesQueries;
 import com.plantsync.platform.plantguides.domain.model.queries.GetGuideByIdQuery;
 import com.plantsync.platform.plantguides.domain.services.GuideCommandService;
 import com.plantsync.platform.plantguides.domain.services.GuideQueryService;
@@ -81,7 +81,7 @@ class PlantGuidesIntegrationTest {
     Long id2 = guideCommandService.handle(command2);
 
     // Act
-    List<Guide> guides = guideQueryService.handle(new GetAllGuidesQuery());
+    List<Guide> guides = guideQueryService.handle(GetAllGuidesQueries.INSTANCE);
 
     // Assert
     assertNotNull(guides);

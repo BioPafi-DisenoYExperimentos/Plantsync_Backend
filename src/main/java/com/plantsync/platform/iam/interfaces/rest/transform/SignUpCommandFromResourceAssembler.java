@@ -10,6 +10,10 @@ import java.util.List;
  * The type Sign up command from resource assembler.
  */
 public class SignUpCommandFromResourceAssembler {
+
+  private SignUpCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource sign up command.
    *
@@ -23,7 +27,9 @@ public class SignUpCommandFromResourceAssembler {
         resource.password(),
         List.of(new Role(Roles.ROLE_USER)), // o lo que definas por defecto
         resource.email(),
-        resource.subscriptionPlan()
+        resource.subscriptionPlan(),
+        resource.age(),
+        resource.gender()
     );
   }
 }

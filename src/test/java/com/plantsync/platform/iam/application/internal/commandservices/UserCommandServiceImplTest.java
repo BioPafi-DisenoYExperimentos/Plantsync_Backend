@@ -2,8 +2,10 @@ package com.plantsync.platform.iam.application.internal.commandservices;
 
 import com.plantsync.platform.iam.application.internal.outboundservices.hashing.HashingService;
 import com.plantsync.platform.iam.application.internal.outboundservices.tokens.TokenService;
+import com.plantsync.platform.iam.domain.exceptions.InvalidPasswordException;
 import com.plantsync.platform.iam.domain.exceptions.RoleNotFoundException;
 import com.plantsync.platform.iam.domain.exceptions.UserAlreadyExistsException;
+import com.plantsync.platform.iam.domain.exceptions.UserNotFoundException;
 import com.plantsync.platform.iam.domain.model.aggregates.User;
 import com.plantsync.platform.iam.domain.model.commands.SignInCommand;
 import com.plantsync.platform.iam.domain.model.commands.SignUpCommand;
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,10 +82,10 @@ class UserCommandServiceImplTest {
     when(userRepository.findByEmail(command.username())).thenReturn(Optional.empty());
 
     // Act
-    var exception = assertThrows(RuntimeException.class, () -> userCommandService.handle(command));
+    var exception = assertThrows(UserNotFoundException.class, () -> userCommandService.handle(command));
 
     // Assert
-    assertEquals("User not found", exception.getMessage());
+    assertEquals("User with email 'missing@plantsync.com' not found.", exception.getMessage());
     verify(hashingService, never()).matches(any(), any());
     verify(tokenService, never()).generateToken(any());
   }
@@ -96,7 +99,7 @@ class UserCommandServiceImplTest {
     when(hashingService.matches(command.password(), user.getPassword())).thenReturn(false);
 
     // Act
-    var exception = assertThrows(RuntimeException.class, () -> userCommandService.handle(command));
+    var exception = assertThrows(InvalidPasswordException.class, () -> userCommandService.handle(command));
 
     // Assert
     assertEquals("Invalid password", exception.getMessage());
@@ -112,7 +115,9 @@ class UserCommandServiceImplTest {
         "plain-password",
         List.of(role),
         "owner@plantsync.com",
-        "FREE"
+        "FREE",
+        30,
+        "Male"
     );
     var createdUser = new User(command.email(), "encoded-password", List.of(role));
     var userCaptor = ArgumentCaptor.forClass(User.class);
@@ -131,7 +136,7 @@ class UserCommandServiceImplTest {
     assertEquals(command.email(), userCaptor.getValue().getEmail());
     assertEquals("encoded-password", userCaptor.getValue().getPassword());
     assertTrue(userCaptor.getValue().getRoles().contains(role));
-    verify(profilesContextFacade).createProfile(command.name(), null, command.subscriptionPlan());
+    verify(profilesContextFacade).createProfile(command.name(), null, command.subscriptionPlan(), command.age(), command.gender());
   }
 
   @Test
@@ -142,7 +147,9 @@ class UserCommandServiceImplTest {
         "plain-password",
         List.of(new Role(Roles.ROLE_USER)),
         "owner@plantsync.com",
-        "FREE"
+        "FREE",
+        30,
+        "Male"
     );
     when(userRepository.existsByEmail(command.email())).thenReturn(true);
 
@@ -152,7 +159,7 @@ class UserCommandServiceImplTest {
     // Assert
     assertEquals("User with email 'owner@plantsync.com' already exists.", exception.getMessage());
     verify(userRepository, never()).save(any(User.class));
-    verify(profilesContextFacade, never()).createProfile(any(), isNull(), any());
+    verify(profilesContextFacade, never()).createProfile(any(), any(), any(), any(), any());
   }
 
   @Test
@@ -163,7 +170,9 @@ class UserCommandServiceImplTest {
         "plain-password",
         List.of(new Role(Roles.ROLE_USER)),
         "owner@plantsync.com",
-        "FREE"
+        "FREE",
+        30,
+        "Male"
     );
     when(userRepository.existsByEmail(command.email())).thenReturn(false);
     when(roleRepository.findByName(Roles.ROLE_USER)).thenReturn(Optional.empty());
@@ -174,7 +183,7 @@ class UserCommandServiceImplTest {
     // Assert
     assertEquals("Role with name 'ROLE_USER' not found.", exception.getMessage());
     verify(userRepository, never()).save(any(User.class));
-    verify(profilesContextFacade, never()).createProfile(any(), any(), any());
+    verify(profilesContextFacade, never()).createProfile(any(), any(), any(), any(), any());
   }
 
   @Test

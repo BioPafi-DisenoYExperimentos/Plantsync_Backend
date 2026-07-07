@@ -92,12 +92,12 @@ public class PlantCommandController {
   @DeleteMapping("/{plantId}")
   @Operation(summary = "Delete plant", description = "Delete plant with a given ID")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Plant deleted"),
+      @ApiResponse(responseCode = "204", description = "Plant deleted"),
       @ApiResponse(responseCode = "404", description = "Plant not found")})
-  public ResponseEntity<?> deletePlant(@PathVariable Long plantId) {
+  public ResponseEntity<Void> deletePlant(@PathVariable Long plantId) {
     var deletePlantCommand = new DeletePlantCommand(plantId);
     plantCommandService.handle(deletePlantCommand);
-    return ResponseEntity.ok("Plant with id successfully deleted");
+    return ResponseEntity.noContent().build();
   }
 
 

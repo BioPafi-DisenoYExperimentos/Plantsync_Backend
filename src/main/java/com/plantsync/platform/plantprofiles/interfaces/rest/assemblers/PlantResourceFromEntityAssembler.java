@@ -7,7 +7,9 @@ import com.plantsync.platform.plantprofiles.interfaces.rest.resources.PlantResou
  * The type Plant resource from entity assembler.
  */
 public class PlantResourceFromEntityAssembler {
-
+  private PlantResourceFromEntityAssembler() {
+    // Utility class
+  }
   /**
    * To resource from entity plant resource.
    *

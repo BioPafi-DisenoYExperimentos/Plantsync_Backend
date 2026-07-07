@@ -87,7 +87,7 @@ public class TaskCommandController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task deleted"),
       @ApiResponse(responseCode = "404", description = "Task not found")})
-  public ResponseEntity<?> deleteTask(@PathVariable Long taskId) {
+  public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
     var deleteTaskCommand = new DeleteTaskCommand(taskId);
     taskCommandService.handle(deleteTaskCommand);
     return ResponseEntity.noContent().build();

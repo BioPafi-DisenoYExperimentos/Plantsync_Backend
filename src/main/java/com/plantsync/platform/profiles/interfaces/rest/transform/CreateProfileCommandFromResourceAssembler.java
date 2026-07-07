@@ -1,6 +1,7 @@
 package com.plantsync.platform.profiles.interfaces.rest.transform;
 
 import com.plantsync.platform.profiles.domain.model.commands.CreateProfileCommand;
+import com.plantsync.platform.profiles.domain.model.valueobjects.Gender;
 import com.plantsync.platform.profiles.domain.model.valueobjects.PersonName;
 import com.plantsync.platform.profiles.domain.model.valueobjects.SubscriptionPlan;
 import com.plantsync.platform.profiles.domain.model.valueobjects.UserId;
@@ -10,7 +11,9 @@ import com.plantsync.platform.profiles.interfaces.rest.resources.CreateProfileRe
  * The type Create profile command from resource assembler.
  */
 public class CreateProfileCommandFromResourceAssembler {
-
+  private CreateProfileCommandFromResourceAssembler() {
+    // Utility class
+  }
   /**
    * To command from resource create profile command.
    *
@@ -21,6 +24,8 @@ public class CreateProfileCommandFromResourceAssembler {
     return new CreateProfileCommand(
         new PersonName(resource.personName()),
         SubscriptionPlan.valueOf(resource.subscriptionPlan().toUpperCase()),
-        new UserId(resource.userId()));
+        new UserId(resource.userId()),
+        resource.age(),
+        resource.gender() != null ? Gender.fromString(resource.gender()) : null);
   }
 }

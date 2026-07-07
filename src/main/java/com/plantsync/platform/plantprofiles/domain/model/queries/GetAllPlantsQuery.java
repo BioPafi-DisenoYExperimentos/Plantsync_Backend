@@ -1,7 +1,7 @@
 package com.plantsync.platform.plantprofiles.domain.model.queries;
 
 /**
- * The type Get all plants query.
+ * Query to retrieve all plants.
  */
-public record GetAllPlantsQuery() {
+public interface GetAllPlantsQuery {
 }

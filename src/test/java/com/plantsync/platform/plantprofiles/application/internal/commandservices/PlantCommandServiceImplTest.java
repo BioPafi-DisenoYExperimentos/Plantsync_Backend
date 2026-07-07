@@ -12,6 +12,8 @@ import com.plantsync.platform.plantprofiles.domain.model.valueobjects.HumidityLe
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.PlantName;
 import com.plantsync.platform.plantprofiles.domain.model.valueobjects.ProfileId;
 import com.plantsync.platform.plantprofiles.infrastructure.persistence.jpa.repositories.PlantRepository;
+import com.plantsync.platform.plantprofiles.infrastructure.persistence.jpa.repositories.PlantHistoryRepository;
+import com.plantsync.platform.tasks.infrastructure.persistence.jpa.repositories.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,6 +39,12 @@ class PlantCommandServiceImplTest {
 
     @Mock
     private PlantRepository plantRepository;
+
+    @Mock
+    private TaskRepository taskRepository;
+
+    @Mock
+    private PlantHistoryRepository plantHistoryRepository;
 
     @InjectMocks
     private PlantCommandServiceImpl plantCommandService;
